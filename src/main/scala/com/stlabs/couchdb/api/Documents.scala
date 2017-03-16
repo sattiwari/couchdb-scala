@@ -1,8 +1,8 @@
 package com.stlabs.couchdb.api
 
-/**
-  * Created by stiwari on 3/16/2017 AD.
-  */
-class Documents {
+import com.stlabs.couchdb.core.Client
+import com.stlabs.couchdb.model.TypeMapping
+
+class Documents(client: Client, db: String, typeMapping: TypeMapping) {
 
 }

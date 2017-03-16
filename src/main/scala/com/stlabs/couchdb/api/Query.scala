@@ -1,8 +1,7 @@
 package com.stlabs.couchdb.api
 
-/**
-  * Created by stiwari on 3/16/2017 AD.
-  */
-class Query {
+import com.stlabs.couchdb.core.Client
+
+class Query(client: Client, db: String) {
 
 }
