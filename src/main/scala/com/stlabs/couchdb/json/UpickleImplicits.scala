@@ -1,9 +1,9 @@
 package com.stlabs.couchdb.json
 
 import org.http4s.Status
-import upickle.{Js, Reader, Types, Writer}
+import upickle.{Js, Reader, Writer}
 
-trait UpickleImplicits extends Types {
+trait UpickleImplicits {
 
   implicit val statusW: Writer[Status] = Writer[Status] {
     x => Js.Num(x.code.toDouble)
