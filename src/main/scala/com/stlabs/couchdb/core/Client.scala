@@ -1,5 +1,8 @@
 package com.stlabs.couchdb.core
 
-class Client(config: Config) {
+import com.stlabs.couchdb.json.UpickleImplicits
+import com.stlabs.couchdb.model.Config
+
+class Client(config: Config) extends UpickleImplicits {
 
 }
