@@ -41,16 +41,31 @@ class Client(config: Config) extends UpickleImplicits {
       } else {
         log.warn(s"unexpected response status ${response.status}, expected $expectedStatus")
         for {
-
-          fail <- Task.fail(CouchException[Res.Err])
+          responseBody <- response.as[String]
+          requestBody <- EntityDecoder.decodeString(request)
+          errorRaw = upickle.read[Res.Error](responseBody)
+          error = errorRaw.copy(
+            status = response.status,
+            request = request.toString,
+            requestBody = requestBody
+          )
+          _ = log.warn(s"Request error $error")
+          fail <- Task.fail(CouchException[Res.Error](error))
         } yield fail
       }
     }
   }
 
+  def reqAndRead[T: R](request: Request, expectedStatus: Status): Task[T] = {
+    for {
+      response <- req(request, expectedStatus)
+      asString <- response.as[String]
+    } yield upickle.read[T](asString)
+  }
+
   def get[T: R](resource: String, expectedStatus: Status, params: Seq[(String, String)] = Seq.empty[(String, String)]): Task[T] = {
     val request = Request(method = GET, uri = url(resource, params), headers = Headers(Header("Accept", "application/json")))
-
+    reqAndRead[T](request, expectedStatus)
   }
 
 }

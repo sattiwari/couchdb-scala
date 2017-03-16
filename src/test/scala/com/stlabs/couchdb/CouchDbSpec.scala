@@ -1,9 +1,8 @@
 package com.stlabs.couchdb
 
-import com.stlabs.couchdb.spec.SpecConfig
-import org.specs2.mutable.Specification
+import com.stlabs.couchdb.spec.{CouchDbSpecification, SpecConfig}
 
-class CouchDbSpec extends Specification {
+class CouchDbSpec extends CouchDbSpecification {
 
   val couch = new CouchDb(SpecConfig.couchDbHost, SpecConfig.couchDbPort, SpecConfig.couchDbScheme)
   val db1   = "couchdb-scala-couchdb-spec1"
@@ -13,7 +12,7 @@ class CouchDbSpec extends Specification {
   "User interface" >> {
 
     "get info about the db instance" >> {
-
+      awaitRight(couch.server.info).couchdb mustEqual "Welcome"
     }
 
   }
